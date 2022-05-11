@@ -8,12 +8,12 @@ team_dic = {"D": "多特蒙德CFD 13华人足球队", "BO": "波鸿原点Ppagei�
             "M": "慕尼黑华人联合足球俱乐部", "F": "法兰克福坚强足球队",
             "DD": "德累斯顿CFC华人足球队", "SCH": "Schöneberg华人足球队"}
 
-image_dic = {"D": "多特蒙德.png", "BO": "波鸿.png",
-            "N": "纽伦堡.png", "DU": "杜伊斯堡.png",
-            "B": "柏林.png", "S": "斯图加特.png",
-            "C": "开姆尼茨.png", "L": "卢森堡.png",
-            "M": "慕尼黑.png", "F": "法兰克福.png",
-            "DD": "德累斯顿.png", "SCH": "Schoeneberg.png"}
+image_dic = {"D": "正方形/多特蒙德.png", "BO": "正方形/波鸿.png",
+            "N": "正方形/纽伦堡.png", "DU": "正方形/杜伊斯堡.png",
+            "B": "正方形/柏林.png", "S": "正方形/斯图加特.png",
+            "C": "正方形/开姆尼茨.png", "L": "正方形/卢森堡.png",
+            "M": "正方形/慕尼黑.png", "F": "正方形/法兰克福.png",
+            "DD": "正方形/德累斯顿.png", "SCH": "正方形/Schoeneberg.png"}
 
 wb = openpyxl.load_workbook("小组积分榜.xlsx")
 ws_a = wb["A小组"]
