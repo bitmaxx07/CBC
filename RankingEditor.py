@@ -152,4 +152,3 @@ evaluate(team_a, 2, team_b, 0)
 team_a.print_all_info()
 print()
 team_b.print_all_info()
-
