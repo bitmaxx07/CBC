@@ -214,9 +214,6 @@ class Window(Frame):
             return False'''
 
 
-
-
-
 '''team_a = Team(image_dic["D"], team_dic["D"], 0, 0, 0, 0, 0, 0, 0, 0)
 team_b = Team(image_dic["N"], team_dic["N"], 0, 0, 0, 0, 0, 0, 0, 0)
 team_c = Team(image_dic["B"], team_dic["B"], 0, 0, 0, 0, 0, 0, 0, 0)
