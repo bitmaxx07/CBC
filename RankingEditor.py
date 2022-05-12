@@ -21,6 +21,18 @@ ws_a = wb["A小组"]
 ws_b = wb["B小组"]
 ws_c = wb["C小组"]
 
+
+class Window(Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        var = StringVar(master)
+        var.set("A")
+        self.menu = OptionMenu(master, var, "B", "C", "D")
+        self.menu.pack()
+        self.pack()
+
+
 # 2-image, 3-name, 4-match, 5-win, 6-draw, 7-lose, 8-goal, 9-against, 10-difference, 11-score
 
 
@@ -129,5 +141,12 @@ rankings = ranking(team_a, team_b, team_c, team_d)
 
 for t in rankings:
     t.print_all_info()
+    fill_in_sheet(t, "A", rankings.index(t) + 1)
 
 # wb.save("result.xlsx")
+
+root = Tk()
+Window(root)
+root.geometry("300x400")
+root.mainloop()
+
