@@ -47,78 +47,6 @@ class Team(object):
         print("against: " + str(self.against))
         print("difference: " + str(self.difference))
         print("score: " + str(self.score))
-'''
-    @property
-    def image(self):
-        return self.image
-
-    @image.setter
-    def image(self, file):
-        self.image = file
-
-    @property
-    def name(self):
-        return self.name
-
-    @name.setter
-    def name(self, value):
-        self.name = value
-
-    @property
-    def win(self):
-        return self.win
-
-    @win.setter
-    def win(self, value):
-        self.win = value
-
-    @property
-    def draw(self):
-        return self.draw
-
-    @draw.setter
-    def draw(self, value):
-        self.draw = value
-
-    @property
-    def lose(self):
-        return self.lose
-
-    @lose.setter
-    def lose(self, value):
-        self.lose = value
-
-    @property
-    def goal(self):
-        return self.goal
-
-    @goal.setter
-    def goal(self, value):
-        self.goal = value
-
-    @property
-    def against(self):
-        return self.against
-
-    @against.setter
-    def against(self, value):
-        self.against = value
-
-    @property
-    def difference(self):
-        return self.difference
-
-    @difference.setter
-    def difference(self, value):
-        self.difference = value
-
-    @property
-    def score(self):
-        return self.score
-
-    @score.setter
-    def score(self, value):
-        self.score = value'''
 
 
 def evaluate(a, score_a,  b, score_b):
@@ -175,6 +103,12 @@ def fill_in_sheet(team, group, rank):
     ws.cell(rank + 2, 11).value = team.score
 
 
+def ranking(team1, team2, team3, team4):
+    ranks = [team1, team2, team3, team4]
+    ranks = sorted(ranks, key=lambda x: (x.score, x.goal, x.win), reverse=True)
+    return ranks
+
+
 team_a = Team(image_dic["D"], team_dic["D"], 0, 0, 0, 0, 0, 0, 0, 0)
 team_b = Team(image_dic["N"], team_dic["N"], 0, 0, 0, 0, 0, 0, 0, 0)
 team_c = Team(image_dic["B"], team_dic["B"], 0, 0, 0, 0, 0, 0, 0, 0)
@@ -187,8 +121,13 @@ team_a.print_all_info()
 print()
 team_b.print_all_info()
 
-fill_in_sheet(team_a, "A", 2)
+'''fill_in_sheet(team_a, "A", 2)
 fill_in_sheet(team_b, "A", 4)
 fill_in_sheet(team_c, "A", 1)
-fill_in_sheet(team_d, "A", 3)
-wb.save("result.xlsx")
+fill_in_sheet(team_d, "A", 3)'''
+rankings = ranking(team_a, team_b, team_c, team_d)
+
+for t in rankings:
+    t.print_all_info()
+
+# wb.save("result.xlsx")
