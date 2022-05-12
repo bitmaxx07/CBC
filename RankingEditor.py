@@ -1,18 +1,19 @@
 import openpyxl
 from tkinter import *
 from PIL import Image
+from tkinter import messagebox
 
 team_dic = {"D": "多特蒙德CFD 13华人足球队", "BO": "波鸿原点Ppagei华人足球队",
             "N": "KSC弗兰肯足球联队", "DU": "打酱油杜伊斯堡队",
             "B": "柏林华人足球队", "S": "斯图加特华人足球队",
-            "C": "开姆尼茨华人足球队", "L": "卢森堡华人足球协会",
+            "CH": "开姆尼茨华人足球队", "L": "卢森堡华人足球协会",
             "M": "慕尼黑华人联合足球俱乐部", "F": "法兰克福坚强足球队",
             "DD": "德累斯顿CFC华人足球队", "SCH": "Schöneberg华人足球队"}
 
 image_dic = {"D": "正方形/多特蒙德.png", "BO": "正方形/波鸿.png",
             "N": "正方形/纽伦堡.png", "DU": "正方形/杜伊斯堡.png",
             "B": "正方形/柏林.png", "S": "正方形/斯图加特.png",
-            "C": "正方形/开姆尼茨.png", "L": "正方形/卢森堡.png",
+            "CH": "正方形/开姆尼茨.png", "L": "正方形/卢森堡.png",
             "M": "正方形/慕尼黑.png", "F": "正方形/法兰克福.png",
             "DD": "正方形/德累斯顿.png", "SCH": "正方形/Schoeneberg.png"}
 
@@ -26,11 +27,49 @@ class Window(Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        var = StringVar(master)
-        var.set("A")
-        self.menu = OptionMenu(master, var, "B", "C", "D")
+        self.var = StringVar(master)
+        self.var.set("A")
+        self.menu = OptionMenu(master, self.var, "A", "B", "C")
         self.menu.pack()
+
+        # self.vcmd = master.register(self.callback)
+        self.team_list = []
+        self.var_team1 = StringVar(master)
+        self.var_team2 = StringVar(master)
+
+        self.team_A = OptionMenu(master, self.var_team1, *self.get_var())
+        self.team_A.place(x=40, y=60)
+        self.score_A = Entry(master, width=10)
+        self.score_A.place(x=100, y=60)
+        self.team_B = OptionMenu(master, self.var_team2, *self.get_var())
+        self.team_B.place(x=40, y=100)
+        self.score_B = Entry(master, width=10)
+        self.score_B.place(x=100, y=100)
+        self.sc_a = self.score_A.get()
+        self.sc_b = self.score_B.get()
+        self.button = Button(master, text="start", command=self.start).place(x=100, y=150)
         self.pack()
+
+    def get_var(self):
+        if self.var.get() == "A":
+            self.team_list = ["D", "BO", "N", "DU"]
+            return self.team_list
+        elif self.var.get() == "B":
+            self.team_list = ["B", "S", "CH", "L"]
+            return self.team_list
+        else:
+            self.team_list = ["M", "F", "DD", "SCH"]
+            return self.team_list
+
+    def start(self):
+        if str.isdigit(self.sc_a) is not True or str.isdigit(self.sc_b) is not True:
+            messagebox.showinfo("Score must be a digit!")
+
+    '''def callback(self, p):
+        if str.isdigit(p) or p == "":
+            return True
+        else:
+            return False'''
 
 
 # 2-image, 3-name, 4-match, 5-win, 6-draw, 7-lose, 8-goal, 9-against, 10-difference, 11-score
@@ -147,6 +186,6 @@ for t in rankings:
 
 root = Tk()
 Window(root)
-root.geometry("300x400")
+root.geometry("300x250")
 root.mainloop()
 
