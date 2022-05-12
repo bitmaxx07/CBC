@@ -1,5 +1,6 @@
 import openpyxl
 from tkinter import *
+from PIL import Image
 
 team_dic = {"D": "多特蒙德CFD 13华人足球队", "BO": "波鸿原点Ppagei华人足球队",
             "N": "KSC弗兰肯足球联队", "DU": "打酱油杜伊斯堡队",
@@ -20,13 +21,14 @@ ws_a = wb["A小组"]
 ws_b = wb["B小组"]
 ws_c = wb["C小组"]
 
-# 2-image, 3-name, 4-win, 5-draw, 6-lose, 7-goal, 8-against, 9-difference, 10-score
+# 2-image, 3-name, 4-match, 5-win, 6-draw, 7-lose, 8-goal, 9-against, 10-difference, 11-score
 
 
 class Team(object):
-    def __init__(self, image, name, win, draw, lose, goal, against, difference, score):
+    def __init__(self, image, name, match, win, draw, lose, goal, against, difference, score):
         self.image = image
         self.name = name
+        self.match = match
         self.win = win
         self.draw = draw
         self.lose = lose
@@ -120,6 +122,8 @@ class Team(object):
 
 
 def evaluate(a, score_a,  b, score_b):
+    a.match += 1
+    b.match += 1
     a.goal = a.goal + score_a
     a.against = a.against + score_b
     b.goal = b.goal + score_b
@@ -144,11 +148,47 @@ def evaluate(a, score_a,  b, score_b):
         b.score = b.score + 1
 
 
-team_a = Team(image_dic["D"], team_dic["D"], 0, 0, 0, 0, 0, 0, 0)
-team_b = Team(image_dic["N"], team_dic["N"], 0, 0, 0, 0, 0, 0, 0)
+def fill_in_sheet(team, group, rank):
+    if group == "A":
+        ws = ws_a
+    elif group == "B":
+        ws = ws_b
+    else:
+        ws = ws_c
+
+    resize_img = Image.open(team.image)
+    new_image = resize_img.resize((80, 80))
+    new_image.save(team.image.split(".png")[0] + "_new.png")
+
+    img = openpyxl.drawing.image.Image(team.image.split(".png")[0] + "_new.png")
+    img.anchor = "B" + str(rank + 2)
+    ws.add_image(img)
+
+    ws.cell(rank + 2, 3).value = team.name
+    ws.cell(rank + 2, 4).value = team.match
+    ws.cell(rank + 2, 5).value = team.win
+    ws.cell(rank + 2, 6).value = team.draw
+    ws.cell(rank + 2, 7).value = team.lose
+    ws.cell(rank + 2, 8).value = team.goal
+    ws.cell(rank + 2, 9).value = team.against
+    ws.cell(rank + 2, 10).value = team.difference
+    ws.cell(rank + 2, 11).value = team.score
+
+
+team_a = Team(image_dic["D"], team_dic["D"], 0, 0, 0, 0, 0, 0, 0, 0)
+team_b = Team(image_dic["N"], team_dic["N"], 0, 0, 0, 0, 0, 0, 0, 0)
+team_c = Team(image_dic["B"], team_dic["B"], 0, 0, 0, 0, 0, 0, 0, 0)
+team_d = Team(image_dic["DU"], team_dic["DU"], 0, 0, 0, 0, 0, 0, 0, 0)
 
 evaluate(team_a, 2, team_b, 0)
+evaluate(team_c, 3, team_d, 1)
 
 team_a.print_all_info()
 print()
 team_b.print_all_info()
+
+fill_in_sheet(team_a, "A", 2)
+fill_in_sheet(team_b, "A", 4)
+fill_in_sheet(team_c, "A", 1)
+fill_in_sheet(team_d, "A", 3)
+wb.save("result.xlsx")
