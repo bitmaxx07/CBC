@@ -28,33 +28,48 @@ class Window(Frame):
         super().__init__(master)
         self.master = master
         self.var = StringVar(master)
-        self.var.set("A")
-        self.menu = OptionMenu(master, self.var, "A", "B", "C")
-        self.menu.pack()
 
+        self.menu = OptionMenu(master, self.var, "A", "B", "C", command=self.callback)
+        self.var.set("A")
+        self.temp = "A"
+        print(self.temp)
+        self.menu.pack()
         # self.vcmd = master.register(self.callback)
         self.team_list = []
         self.var_team1 = StringVar(master)
         self.var_team2 = StringVar(master)
 
-        self.team_A = OptionMenu(master, self.var_team1, *self.get_var())
+        self.team_A = OptionMenu(master, self.var_team1, "")
         self.team_A.place(x=40, y=60)
         self.score_A = Entry(master, width=10)
         self.score_A.place(x=100, y=60)
-        self.team_B = OptionMenu(master, self.var_team2, *self.get_var())
+        self.team_B = OptionMenu(master, self.var_team2, "")
         self.team_B.place(x=40, y=100)
         self.score_B = Entry(master, width=10)
         self.score_B.place(x=100, y=100)
         self.sc_a = self.score_A.get()
         self.sc_b = self.score_B.get()
         self.button = Button(master, text="start", command=self.start).place(x=100, y=150)
+        self.refresh_button = Button(master, text="refresh", command=self.refresh).place(x=25, y=20)
         self.pack()
 
+    def callback(self, selection):
+        self.var.set(selection)
+        self.temp = selection
+        # print(self.temp)
+
+    def refresh(self):
+        self.team_A = OptionMenu(self.master, self.var_team1, *self.get_var())
+        self.team_A.place(x=40, y=60)
+        self.team_B = OptionMenu(self.master, self.var_team2, *self.get_var())
+        self.team_B.place(x=40, y=100)
+        print(self.get_var())
+
     def get_var(self):
-        if self.var.get() == "A":
+        if self.temp == "A":
             self.team_list = ["D", "BO", "N", "DU"]
             return self.team_list
-        elif self.var.get() == "B":
+        elif self.temp == "B":
             self.team_list = ["B", "S", "CH", "L"]
             return self.team_list
         else:
@@ -62,6 +77,7 @@ class Window(Frame):
             return self.team_list
 
     def start(self):
+
         if str.isdigit(self.sc_a) is not True or str.isdigit(self.sc_b) is not True:
             messagebox.showinfo("Score must be a digit!")
 
