@@ -1,9 +1,15 @@
 import openpyxl
 from tkinter import *
 from PIL import Image
-from tkinter import messagebox
+from tkinter import messagebox, filedialog
 
 # 2-image, 3-name, 4-match, 5-win, 6-draw, 7-lose, 8-goal, 9-against, 10-difference, 11-score
+
+file = ""
+
+
+def set_file(filename):
+    file = filename
 
 
 class Team(object):
@@ -154,12 +160,17 @@ class Window(Frame):
         self.sc_b = self.score_B.get()
         self.button = Button(master, text="start", command=self.start).place(x=100, y=150)
         self.refresh_button = Button(master, text="refresh", command=self.refresh).place(x=25, y=20)
+        # self.file = ""
+        self.select_file_button = Button(master, text="select file", command=self.load_xlsx).place(x=100, y=20)
         self.pack()
 
     def callback(self, selection):
         self.var.set(selection)
         self.temp = selection
         # print(self.temp)
+
+    def load_xlsx(self):
+        self.file = filedialog.askopenfilename(title="Choose excel file", filetypes=[("Excel", "*.xlsx")])
 
     def refresh(self):
         self.team_A = OptionMenu(self.master, self.var_team1, *self.get_var())
@@ -186,7 +197,10 @@ class Window(Frame):
         if str.isdigit(self.sc_a) is not True or str.isdigit(self.sc_b) is not True:
             messagebox.showinfo("Score must be a digit!")
         else:
+            wb = openpyxl.load_workbook(self.file.name)
             temp_team_list = []
+            if self.var_team1.get() == self.var_team2.get():
+                messagebox.showwarning("cannot deal with two same teams!")
             for team in total_team_list:
                 if team_dic[self.var_team1.get()] == team.name:
                     team1 = team
@@ -204,8 +218,8 @@ class Window(Frame):
             for ts in rank_list:
                 fill_in_sheet(ts, self.temp, rank_list.index(ts) + 1)
 
-        wb.save("result.xlsx")
-        messagebox.showinfo("Done!")
+            wb.save("result.xlsx")
+            messagebox.showinfo("Done!")
 
     '''def callback(self, p):
         if str.isdigit(p) or p == "":
