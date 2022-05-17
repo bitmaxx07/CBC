@@ -221,14 +221,17 @@ class Window(Frame):
             rank_list = ranking(team1, team2, temp_team_list[0], temp_team_list[1])
             for ts in rank_list:
                 fill_in_sheet(ts, self.temp, rank_list.index(ts) + 1)
-            message = "Team 1: " + team_dic[self.var_team1.get()] + " " + self.sc_a + "\n" + \
-                                "Team 2: " + team_dic[self.var_team2.get()] + " " + self.sc_b
+            message = "Team 1: " + team_dic[self.var_team1.get()] + " - " + self.sc_a + "\n" + \
+                                "Team 2: " + team_dic[self.var_team2.get()] + " - " + self.sc_b
+
+            message_txt = team_dic[self.var_team1.get()] + " " + self.sc_a + " - " + \
+                          self.sc_b + " " + team_dic[self.var_team2.get()] + " "
 
             messagebox.askokcancel("OK Cancel", message)
 
             with open("temp_result.txt", "w") as f:
-                f.write("Round: " + self.round.get())
-                f.write(message)
+                f.write("Round: " + self.round.get() + " ")
+                f.write(message_txt)
                 f.write("\n")
 
             wb.save("result_round_" + self.round.get() + ".xlsx")
