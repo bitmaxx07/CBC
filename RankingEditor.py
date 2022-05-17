@@ -9,7 +9,7 @@ file = ""
 
 
 def set_file(filename):
-    file = filename
+    wb = openpyxl.load_workbook(filename)
 
 
 class Team(object):
@@ -158,10 +158,14 @@ class Window(Frame):
         self.score_B.place(x=100, y=100)
         self.sc_a = self.score_A.get()
         self.sc_b = self.score_B.get()
-        self.button = Button(master, text="start", command=self.start).place(x=100, y=150)
+        self.button = Button(master, text="start", command=self.start).place(x=100, y=200)
         self.refresh_button = Button(master, text="refresh", command=self.refresh).place(x=25, y=20)
         # self.file = ""
         self.select_file_button = Button(master, text="select file", command=self.load_xlsx).place(x=100, y=20)
+        self.round = Entry(master, width=5)
+        self.round.place(x=100, y=150)
+        self.round_label = Label(master, text="Round: ")
+        self.round_label.place(x=40, y=150)
         self.pack()
 
     def callback(self, selection):
@@ -197,7 +201,7 @@ class Window(Frame):
         if str.isdigit(self.sc_a) is not True or str.isdigit(self.sc_b) is not True:
             messagebox.showinfo("Score must be a digit!")
         else:
-            wb = openpyxl.load_workbook(self.file.name)
+            set_file(self.file)
             temp_team_list = []
             if self.var_team1.get() == self.var_team2.get():
                 messagebox.showwarning("cannot deal with two same teams!")
@@ -222,11 +226,12 @@ class Window(Frame):
 
             messagebox.askokcancel("OK Cancel", message)
 
-            with open("temp_result.txt") as f:
+            with open("temp_result.txt", "w") as f:
+                f.write("Round: " + self.round.get())
                 f.write(message)
                 f.write("\n")
 
-            wb.save("result.xlsx")
+            wb.save("result_round_" + self.round.get() + ".xlsx")
             messagebox.showinfo("Done!")
 
     '''def callback(self, p):
