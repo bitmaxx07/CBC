@@ -91,6 +91,7 @@ def fill_in_sheet(team, group, rank):
     ws.cell(rank + 2, 11).value = team.score
 
 
+# TODO: add new ranking logic
 def ranking(team_a, team_b, team3, team4):
     ranks = [team_a, team_b, team3, team4]
     ranks = sorted(ranks, key=lambda x: (x.score, x.goal, x.win), reverse=True)
@@ -272,4 +273,3 @@ root = Tk()
 Window(root)
 root.geometry("300x250")
 root.mainloop()
-
