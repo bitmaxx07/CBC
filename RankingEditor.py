@@ -24,6 +24,7 @@ class Team(object):
         self.against = against
         self.difference = difference
         self.score = score
+        self.beaten = []
 
     def print_all_info(self):
         print("image: " + self.image)
@@ -35,6 +36,9 @@ class Team(object):
         print("against: " + str(self.against))
         print("difference: " + str(self.difference))
         print("score: " + str(self.score))
+
+    def add_beaten(self, team):
+        self.beaten.append(team.name)
 
 
 def evaluate(a, score_a,  b, score_b):
@@ -51,11 +55,13 @@ def evaluate(a, score_a,  b, score_b):
         a.win = a.win + 1
         b.lose = b.lose + 1
         a.score = a.score + 3
+        b.add_beaten(a)
 
     elif score_a < score_b:
         b.win = b.win + 1
         a.lose = a.lose + 1
         b.score = b.score + 3
+        a.add_beaten(b)
 
     else:
         a.draw = a.draw + 1
