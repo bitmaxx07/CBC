@@ -40,6 +40,9 @@ class Team(object):
     def add_beaten(self, team):
         self.beaten.append(team.name)
 
+    def get_beaten(self):
+        return self.beaten
+
 
 def evaluate(a, score_a,  b, score_b):
     a.match += 1
@@ -100,8 +103,27 @@ def fill_in_sheet(team, group, rank):
 # TODO: add new ranking logic
 def ranking(team_a, team_b, team3, team4):
     ranks = [team_a, team_b, team3, team4]
-    ranks = sorted(ranks, key=lambda x: (x.score, x.goal, x.win), reverse=True)
-    return ranks
+    ranks = sorted(ranks, key=lambda x: x.score, reverse=True)
+    temp = []
+    for idx in range(0, len(ranks) - 1):
+        if ranks[idx].score == ranks[idx + 1].score:
+            temp.append(rank_with_same_points(ranks[idx], ranks[idx + 1]))
+            idx += 1
+        else:
+            temp.append(ranks[idx])
+        return temp
+
+
+def rank_with_same_points(team_a, team_b):
+    if team_a.score != team_b.score:
+        return sorted([team_a, team_b], key=lambda x: x.score, reverse=True)
+    else:
+        if team_b in team_a.get_beaten:
+            return [team_b, team_a]
+        if team_a in team_b.get_beaten:
+            return [team_a, team_b]
+        else:
+            return sorted([team_a, team_b], key=lambda x: (x.goal, x.win), reverse=True)
 
 
 team_dic = {"D": "多特蒙德CFD 13华人足球队", "BO": "波鸿原点Ppagei华人足球队",
